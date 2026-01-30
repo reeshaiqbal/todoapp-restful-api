@@ -7,7 +7,9 @@ class TodoSerializer(serializers.ModelSerializer):
     done = serializers.BooleanField(default=False)
 
     class Meta:
-        fields = ['id', 'title', 'done']  # Setting the order of attributes
+        # Setting which fields the serializer should include, user can only interact with the fields ser allows
+        fields = '__all__'
+        read_only_fields = ['user']
         model = Todo
         # To prevent swagger conflicts I gave it a unique reference name, as this project has 2 apps under same name serializers
         ref_name = "ManualApiSerializer"

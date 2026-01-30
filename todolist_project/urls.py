@@ -15,12 +15,15 @@ schema_view = get_schema_view(
     ),
     public=True,
     permission_classes=[permissions.AllowAny],
+    authentication_classes=[],  # important
 )
 
 urlpatterns = [
     # Configured URL patterns and mapped them to the respective apps
     path('manualapis/', include('manual_api.urls')),
     path('viewsetapis/', include('viewset_api.urls')),
+    path('accounts/', include('accounts.urls')),
+
 
     path('swagger.json', schema_view.without_ui(
         cache_timeout=0), name='schema-json'),

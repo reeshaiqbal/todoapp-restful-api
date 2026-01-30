@@ -39,10 +39,34 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Registered apps here so django knows that these apps exsits
     'rest_framework',  # DRF
-    'drf_yasg',     # SWAGGER
-    'manual_api',  # APP1
-    'viewset_api',  # APP2
+    'drf_yasg',     # Swagger
+    'manual_api',  # App with APIView
+    'viewset_api',  # App with Viewsets and routers
+    'rest_framework.authtoken',  # Token system ON
+    'accounts',
 ]
+
+# Configured DRF Authentication, makes APIs require auth by default
+# User should pass both authentication & authorization to access an API
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [  # To check token with every request in authorization header, if token is valid -> user is authenticated
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [  # Permission check, By default APIs are protected, Access wont be granted without isAuthenticated being True
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Token': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+        }
+    },
+    'USE_SESSION_AUTH': False,
+}
 
 
 MIDDLEWARE = [

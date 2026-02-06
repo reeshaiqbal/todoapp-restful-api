@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User  # builtin django User model
+from .models import CustomUserModel   # Custom model 
 
 
 # Inheriting from ModelSerializer, it maps model fields to serializer fields automatically
@@ -8,20 +8,22 @@ class SignupSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
 
     class Meta:
-        model = User  # Tells Serializer which django model is connected to it
+        model = CustomUserModel  # Tells Serializer which django model is connected to it
         # Specifying which fields of model the serializer should include(Serializer accepts as input/ Can include in output depending on read_only / write_only configuration.)
         # User can only interact with the fields that serializer allows
         # Defines which model fields the serializer exposes.
-        fields = ['username', 'email', 'password']
+        fields = ['username', 'email', 'password', 'phone_number']
 
     # Called when save() is ran
     # validated_data is the dict containing validated data
     def create(self, validated_data):
-        user = User.objects.create_user(  # Method to save password with hashing
+        user = CustomUserModel.objects.create_user(  # Method to save password with hashing
             username=validated_data['username'],
             # if user did not provide an email an empty string will be stored
             email=validated_data.get('email', ''),
-            password=validated_data['password']
+            # Plain password is passed to manager and hashing happens there 
+            password=validated_data['password'],
+            phone_number=validated_data['phone_number']
         )
         return user   # user object(User Model instance) is returned
 
